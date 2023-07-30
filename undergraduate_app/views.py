@@ -52,9 +52,9 @@ class RetrieveUpdateDepartmentHeadView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class ListWeeklyReportsView(generics.ListCreateAPIView):
-    queryset = DepartmentHead.objects.all()
+    queryset = WeeklyReport.objects.all()
     serializer_class = WeeklyReportSerializer
-    permission_classes = [ReadOnlyUser | IsAdmin]
+    # permission_classes = [ReadOnlyUser | IsAdmin]
 
 
 class RetrieveWeeklyReportView(generics.RetrieveUpdateDestroyAPIView):
@@ -85,4 +85,3 @@ class RetrieveFinalProjectView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [ReadOnlyUser | IsAdmin]
     serializer_class = FinalProjectSerializer
     queryset = FinalProject.objects.all()
-
