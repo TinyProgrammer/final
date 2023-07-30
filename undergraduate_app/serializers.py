@@ -2,6 +2,13 @@ from undergraduate_app.models import *
 from rest_framework import serializers
 
 
+class AuthorizeSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Person
+        fields = ('username', 'password')
+
+
 class StatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = Status

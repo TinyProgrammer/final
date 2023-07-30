@@ -2,6 +2,8 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
+    path('authorize/', Authorization.as_view(), name='Authorization'),
+
     path('professors/', ListProfessorView.as_view(), name='create and list Professors'),
     path('professor/<str:pk>', RetrieveUpdateProfessorView.as_view(), name='detail Professor'),
 
