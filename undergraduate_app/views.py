@@ -20,8 +20,7 @@ class Authorization(GenericAPIView):
         if u.exists():
             if Collegian.objects.filter(username=username).exists():
                 return Response({'role': 'collegian'}, status=status.HTTP_202_ACCEPTED)
-        else:
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 
 class ListProfessorView(generics.ListCreateAPIView):
