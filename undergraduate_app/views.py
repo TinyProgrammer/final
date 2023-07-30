@@ -13,8 +13,8 @@ class Authorization(GenericAPIView):
     queryset = Person.objects.all()
 
     def post(self, request, *args, **kwargs):
-        username = request.get('username')
-        password = request.get('password')
+        username = request.data.get('username')
+        password = request.data.get('password')
 
         u = Person.objects.filter(username=username, password=password)
         if u.exists():
