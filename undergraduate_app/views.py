@@ -24,6 +24,8 @@ class Authorization(GenericAPIView):
             role = None
             if Collegian.objects.filter(username=username).exists():
                 role = 'collegian'
+            elif Professor.objects.filter(username=username).exists():
+                role = 'professor'
             return Response({'role': role,
                              'access': str(token.access_token),
                              }, status=status.HTTP_202_ACCEPTED)
