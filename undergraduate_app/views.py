@@ -1,31 +1,41 @@
 from rest_framework.response import Response
 from rest_framework import generics, status
 from rest_framework.generics import GenericAPIView
-
+from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import *
-from undergraduate_app.models import *
 from .permissions import *
 from .models import *
 
 
 class Authorization(GenericAPIView):
+    authentication_classes = []
     serializer_class = AuthorizeSerializer
     queryset = Person.objects.all()
 
     def post(self, request, *args, **kwargs):
         username = request.data.get('username')
-        password = request.data.get('password')
+        raw_password = request.data.get('password')
 
-        u = Person.objects.filter(username=username, password=password)
+        hashed_password =  bcrypt.hashpw(raw_password.encode('utf8'), SALT)
+
+        u = Person.objects.filter(username=username, password=hashed_password)
         if u.exists():
+            token = RefreshToken.for_user(u.first())
+            role = None
             if Collegian.objects.filter(username=username).exists():
-                return Response({'role': 'collegian'}, status=status.HTTP_202_ACCEPTED)
+                role = 'collegian'
+            return Response({'role': role,
+                             'access': str(token.access_token),
+                             }, status=status.HTTP_202_ACCEPTED)
         return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 
 class ListProfessorView(generics.ListCreateAPIView):
     serializer_class = ProfessorSerializer
     queryset = Professor.objects.all()
+
+    def get(self, request, **kwargs):
+        return Response(status=status.HTTP_200_OK)
 
 
 class RetrieveUpdateProfessorView(generics.RetrieveUpdateDestroyAPIView):

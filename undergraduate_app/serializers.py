@@ -6,7 +6,9 @@ class AuthorizeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Person
-        fields = ('username', 'password')
+        fields = ['username', 'password']
+        extra_kwargs = {'password': {'write_only': True}}
+
 
 
 class StatusSerializer(serializers.ModelSerializer):
